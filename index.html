@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/login.js" defer></script>
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="header-tag">
+            Group 9
+        </div>
+
+        <div class="icon-box">
+            👨‍🏫
+        </div>
+
+        <h1>Admin Login</h1>
+
+        <p class="subtitle">
+            Attendance Monitoring System
+        </p>
+
+        <form id="admin-login-form">
+
+            <div class="input-group">
+                <label>Username</label>
+                <input id="admin-username" name="username" type="text" placeholder="Enter Username" autocomplete="username" required autofocus>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input id="admin-password" name="password" type="password" placeholder="Enter Password" autocomplete="current-password" required>
+            </div>
+
+            <p class="login-error" id="login-error" role="alert"></p>
+
+            <button class="login-btn" type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div class="footer-link">
+            <a href="login-student.html">
+                Login as Student
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
