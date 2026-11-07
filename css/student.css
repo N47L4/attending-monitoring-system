@@ -431,7 +431,7 @@ body{
     }
 }
 
-@media (max-width:700px){
+@media (max-width:620px){
     .dashboard,
     .sidebar.close ~ .dashboard{
         margin-left:0;
