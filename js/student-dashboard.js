@@ -130,6 +130,13 @@ function renderAttendanceSummary() {
     document.querySelector("#student-late-count").textContent = late;
     document.querySelector("#student-absent-count").textContent = absent;
 
+    const absenceAlert = document.querySelector("#absence-alert");
+    absenceAlert.hidden = absent < 3;
+    if (!absenceAlert.hidden) {
+        document.querySelector("#absence-alert-text").textContent =
+            `You have ${absent} recorded absences. Please contact your instructor if you need support.`;
+    }
+
     const score = document.querySelector(".health .score");
     const healthStatus = document.querySelector("#attendance-health-status");
     score.textContent = `${attendanceRate}%`;
@@ -165,18 +172,6 @@ function renderAttendanceSummary() {
         historyBody.innerHTML = '<tr><td colspan="2">No attendance records</td></tr>';
     }
 
-    let consecutiveAbsences = 0;
-    for (const entry of entries) {
-        if (entry.status === "Absent") {
-            consecutiveAbsences++;
-        } else {
-            break;
-        }
-    }
-    document.querySelector("#consecutive-absence-text").textContent =
-        consecutiveAbsences > 0
-            ? `Student has been absent for ${consecutiveAbsences} consecutive recorded ${consecutiveAbsences === 1 ? "day" : "days"}.`
-            : "No consecutive absence alert.";
 }
 
 function renderHeatMap() {

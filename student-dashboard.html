@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="css/student.css">
+    <script src="js/attendance-seed.js" defer></script>
     <script src="js/student-dashboard.js" defer></script>
 </head>
 <body>
@@ -90,9 +91,9 @@
                     <div class="heatmap"></div>
                 </div>
 
-                <div class="alert">
-                    <h3>⚠ Consecutive Absence Alert</h3>
-                    <p id="consecutive-absence-text">No consecutive absence alert.</p>
+                <div class="alert" id="absence-alert" role="alert" hidden>
+                    <h3>⚠ Absence Warning</h3>
+                    <p id="absence-alert-text"></p>
                 </div>
             </div>
         </div>
