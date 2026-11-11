@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Monitoring System Flowchart</title>
+    <style>
+        body {
+            color: #1f2937;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 24px;
+        }
+
+        header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto 20px;
+            max-width: 1200px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        button {
+            background: #4f46e5;
+            border: 0;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+
+        #flowchart {
+            margin: 0 auto;
+            max-width: 1200px;
+            overflow-x: auto;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            header {
+                display: none;
+            }
+
+            #flowchart {
+                max-width: none;
+                overflow: visible;
+            }
+
+            #flowchart svg {
+                height: auto;
+                max-width: 100%;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Attendance Monitoring System Flowchart</h1>
+        <button type="button" onclick="window.print()">Print / Save as PDF</button>
+    </header>
+    <main id="flowchart">
+        <pre class="mermaid">
+flowchart TD
+    A([Start]) --> B[Open login page]
+    B --> C[Enter credentials]
+    C --> D{Credentials valid?}
+    D -->|No| E[Show login error]
+    E --> C
+    D -->|Yes| F[Java backend validates account against MySQL]
+    F --> G{User role?}
+
+    G -->|Admin| H[Open Admin Dashboard]
+    G -->|Student| I[Open Student Dashboard]
+
+    subgraph ADMIN[Admin workflow]
+        H --> J{Choose admin action}
+
+        J -->|Manage students| K[Add, update, or deactivate student]
+        K --> L[Validate and save student data to MySQL]
+        L --> J
+
+        J -->|Mark attendance| M[Select date, class, and subject]
+        M --> N{Weekend, holiday, or suspension?}
+        N -->|Yes| O[Do not create attendance records]
+        O --> J
+        N -->|No| P[Load subject roster and existing records]
+        P --> Q[Mark each student Present, Late, or Absent]
+        Q --> R{Entries valid?}
+        R -->|No| S[Show validation errors]
+        S --> Q
+        R -->|Yes| T[Save attendance by student, subject, and date in MySQL]
+        T --> U[Show save confirmation]
+        U --> J
+
+        J -->|Edit attendance| V[Find attendance record]
+        V --> W[Update status and record edit details]
+        W --> X[Save changes to MySQL]
+        X --> J
+
+        J -->|View or print reports| Y[Select report filters]
+        Y --> Z[Retrieve attendance data from MySQL]
+        Z --> AA[Display report and statistics]
+        AA --> AB{Print report?}
+        AB -->|Yes| AC[Print report]
+        AB -->|No| J
+        AC --> J
+    end
+
+    subgraph STUDENT[Student workflow]
+        I --> AD[Request personal attendance data]
+        AD --> AE[Retrieve student's records by subject and date]
+        AE --> AF[Display attendance history and statistics]
+        AF --> AG[Calculate absence percentage]
+        AG --> AH{Absence percentage?}
+        AH -->|20% or more| AI[Show Failure/Drop Zone warning]
+        AH -->|15% to less than 20%| AJ[Show Grade Penalty Zone warning]
+        AH -->|10% to less than 15%| AK[Show Academic Warning Zone warning]
+        AH -->|Less than 10%| AL[Show no threshold warning]
+        AI --> AM[Display student dashboard]
+        AJ --> AM
+        AK --> AM
+        AL --> AM
+    end
+
+    U --> AN{Logout?}
+    X --> AN
+    J --> AN
+    AC --> AN
+    AM --> AN
+    AN -->|No| AO{Role?}
+    AO -->|Admin| J
+    AO -->|Student| AD
+    AN -->|Yes| AP[End authenticated session]
+    AP --> AQ([Return to login page])
+        </pre>
+    </main>
+    <script>
+        mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+    </script>
+</body>
+</html>

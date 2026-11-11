@@ -1,0 +1,72 @@
+flowchart TD
+    A([Start]) --> B[Open login page]
+    B --> C[Enter credentials]
+    C --> D{Credentials valid?}
+    D -->|No| E[Show login error]
+    E --> C
+    D -->|Yes| F[Java backend validates account against MySQL]
+    F --> G{User role?}
+
+    G -->|Admin| H[Open Admin Dashboard]
+    G -->|Student| I[Open Student Dashboard]
+
+    subgraph ADMIN[Admin workflow]
+        H --> J{Choose admin action}
+
+        J -->|Manage students| K[Add, update, or deactivate student]
+        K --> L[Validate and save student data to MySQL]
+        L --> J
+
+        J -->|Mark attendance| M[Select date, class, and subject]
+        M --> N{Weekend, holiday, or suspension?}
+        N -->|Yes| O[Do not create attendance records]
+        O --> J
+        N -->|No| P[Load subject roster and existing records]
+        P --> Q[Mark each student Present, Late, or Absent]
+        Q --> R{Entries valid?}
+        R -->|No| S[Show validation errors]
+        S --> Q
+        R -->|Yes| T[Save attendance by student, subject, and date in MySQL]
+        T --> U[Show save confirmation]
+        U --> J
+
+        J -->|Edit attendance| V[Find attendance record]
+        V --> W[Update status and record edit details]
+        W --> X[Save changes to MySQL]
+        X --> J
+
+        J -->|View or print reports| Y[Select report filters]
+        Y --> Z[Retrieve attendance data from MySQL]
+        Z --> AA[Display report and statistics]
+        AA --> AB{Print report?}
+        AB -->|Yes| AC[Print report]
+        AB -->|No| J
+        AC --> J
+    end
+
+    subgraph STUDENT[Student workflow]
+        I --> AD[Request personal attendance data]
+        AD --> AE[Retrieve student's records by subject and date]
+        AE --> AF[Display attendance history and statistics]
+        AF --> AG[Calculate absence percentage]
+        AG --> AH{Absence percentage?}
+        AH -->|20% or more| AI[Show Failure/Drop Zone warning]
+        AH -->|15% to less than 20%| AJ[Show Grade Penalty Zone warning]
+        AH -->|10% to less than 15%| AK[Show Academic Warning Zone warning]
+        AH -->|Less than 10%| AL[Show no threshold warning]
+        AI --> AM[Display student dashboard]
+        AJ --> AM
+        AK --> AM
+        AL --> AM
+    end
+
+    U --> AN{Logout?}
+    X --> AN
+    J --> AN
+    AC --> AN
+    AM --> AN
+    AN -->|No| AO{Role?}
+    AO -->|Admin| J
+    AO -->|Student| AD
+    AN -->|Yes| AP[End authenticated session]
+    AP --> AQ([Return to login page])
